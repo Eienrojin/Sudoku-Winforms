@@ -8,9 +8,9 @@ namespace Sudoku
 {
     internal enum BoardsEnum
     {
-        X4,
-        X9,
-        X16,
-        X25
+        X4 = 4,
+        X9 = 9,
+        X16 = 16,
+        X25 = 25
     }
 }

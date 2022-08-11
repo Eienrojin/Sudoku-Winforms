@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.SudokuBoardDGV = new System.Windows.Forms.DataGridView();
-            this.IsCorrectLabel = new System.Windows.Forms.Label();
+            this.MessageLabel = new System.Windows.Forms.Label();
             this.CheckAnswerCheckBox = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SudokuBoardDGV)).BeginInit();
@@ -56,38 +56,42 @@
             this.SudokuBoardDGV.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.SudokuBoardDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.SudokuBoardDGV.ColumnHeadersVisible = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Info;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe Print", 15.25F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.MenuHighlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.SudokuBoardDGV.DefaultCellStyle = dataGridViewCellStyle1;
+            this.SudokuBoardDGV.Cursor = System.Windows.Forms.Cursors.Cross;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Info;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe Print", 15.25F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle3.NullValue = null;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.DarkRed;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.SudokuBoardDGV.DefaultCellStyle = dataGridViewCellStyle3;
             this.SudokuBoardDGV.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.SudokuBoardDGV.Location = new System.Drawing.Point(3, 3);
             this.SudokuBoardDGV.MultiSelect = false;
             this.SudokuBoardDGV.Name = "SudokuBoardDGV";
             this.SudokuBoardDGV.RowHeadersVisible = false;
             this.SudokuBoardDGV.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.SudokuBoardDGV.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.SudokuBoardDGV.Size = new System.Drawing.Size(559, 559);
             this.SudokuBoardDGV.TabIndex = 0;
-            this.SudokuBoardDGV.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.SudokuBoardDGV_CellContentClick);
             this.SudokuBoardDGV.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.SudokuBoardDGV_CellEndEdit);
+            this.SudokuBoardDGV.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SudokuBoardDGV_KeyPress);
             // 
-            // IsCorrectLabel
+            // MessageLabel
             // 
-            this.IsCorrectLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.MessageLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.IsCorrectLabel.AutoSize = true;
-            this.IsCorrectLabel.Enabled = false;
-            this.IsCorrectLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.25F);
-            this.IsCorrectLabel.Location = new System.Drawing.Point(12, 602);
-            this.IsCorrectLabel.Name = "IsCorrectLabel";
-            this.IsCorrectLabel.Size = new System.Drawing.Size(121, 25);
-            this.IsCorrectLabel.TabIndex = 1;
-            this.IsCorrectLabel.Text = "Правильно";
-            this.IsCorrectLabel.Visible = false;
+            this.MessageLabel.AutoSize = true;
+            this.MessageLabel.Enabled = false;
+            this.MessageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.25F);
+            this.MessageLabel.Location = new System.Drawing.Point(12, 602);
+            this.MessageLabel.Name = "MessageLabel";
+            this.MessageLabel.Size = new System.Drawing.Size(121, 25);
+            this.MessageLabel.TabIndex = 1;
+            this.MessageLabel.Text = "Правильно";
+            this.MessageLabel.Visible = false;
+            this.MessageLabel.Click += new System.EventHandler(this.MessageLabel_Click);
             // 
             // CheckAnswerCheckBox
             // 
@@ -105,12 +109,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(589, 689);
-            this.Controls.Add(this.IsCorrectLabel);
+            this.Controls.Add(this.MessageLabel);
             this.Controls.Add(this.CheckAnswerCheckBox);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Судоку";
             this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SudokuBoardDGV)).EndInit();
             this.ResumeLayout(false);
@@ -122,7 +128,7 @@
 
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.DataGridView SudokuBoardDGV;
-        private System.Windows.Forms.Label IsCorrectLabel;
+        private System.Windows.Forms.Label MessageLabel;
         private System.Windows.Forms.CheckBox CheckAnswerCheckBox;
     }
 }

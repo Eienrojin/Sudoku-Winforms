@@ -10,32 +10,15 @@ namespace Sudoku
     {
         public GameStates(BoardsEnum size, int countOfWin = 0, int countOfFail = 0)
         {
-            SudokuSize = InitSize(size);
-            Squares = new SudokuSquare(SudokuSize);
+            SudokuSize = size;
             CountOfWin = countOfWin;
             CountOfFail = countOfFail;
+            Squares = new SudokuSquare(SudokuSize);
         }
 
         public SudokuSquare Squares { get; private set; }
         public int CountOfWin { get; set; }
         public int CountOfFail { get; set; }
-        public int SudokuSize { get; set; }
-
-        private static int InitSize(BoardsEnum sizes)
-        {
-            switch (sizes)
-            {
-                case BoardsEnum.X4:
-                    return 4;
-                case BoardsEnum.X9:
-                    return 9;
-                case BoardsEnum.X16:
-                    return 16;
-                case BoardsEnum.X25:
-                    return 25;
-                default:
-                    return 0;
-            }
-        }
+        public BoardsEnum SudokuSize { get; set; }
     }
 }
