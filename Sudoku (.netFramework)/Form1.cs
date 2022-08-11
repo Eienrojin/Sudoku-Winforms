@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 /*
  * Back
  * (Метод проверки правильности) +
+ * (Переполнение в SudokuBoardDGV_CellEndEdit когда вводится слишком большое число) +
  * Метод авторешения
  * Метод заполения доски определенного размера по сложности
  * Метод загрузки сохраненных данных из папки с игрой
  * Автоматически проставленные цифры пометить как readonly
- * Переполнение в SudokuBoardDGV_CellEndEdit когда вводится слишком большое число
  * 
  * Front
  * Автоматически проставленные цифры красить в чуть более тусклый цвет
@@ -42,7 +42,7 @@ namespace Sudoku
 
         private void NewGame()
         {
-            _gameStates = new GameStates(BoardsEnum.X9);
+            _gameStates = new GameStates(BoardsEnum.X16);
             PrepareBoard();
             InitStyles();
         }
@@ -52,6 +52,7 @@ namespace Sudoku
             InitNewBoard((int)_gameStates.SudokuSize);
             FillCellsWithZero();
             MakeCellsSquare();
+            LimitMaxInputLength();
         }
 
         private void InitStyles()
@@ -95,6 +96,16 @@ namespace Sudoku
                 SudokuBoardDGV.Rows[i].Height = cellMaxSize;
                 SudokuBoardDGV.Columns[i].Width = cellMaxSize;
             }
+        }
+
+        private void LimitMaxInputLength()
+        {
+            for (int i = 0; i < SudokuBoardDGV.ColumnCount; i++)
+                for (int j = 0; j < SudokuBoardDGV.RowCount; j++)
+                {
+                    var cell = (DataGridViewTextBoxCell)SudokuBoardDGV[i,j];
+                    cell.MaxInputLength = 2;
+                }
         }
 
         //Проверка содержания числа по горизонтали и вертикали
@@ -165,8 +176,15 @@ namespace Sudoku
         }
         private void SudokuBoardDGV_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if (Convert.ToInt16(SudokuBoardDGV[e.ColumnIndex, e.RowIndex].Value) > _gameStates.Squares.MaxNumber)
+            try 
+            {
+                if (Convert.ToInt16(SudokuBoardDGV[e.ColumnIndex, e.RowIndex].Value) > _gameStates.Squares.MaxNumber)
+                    SudokuBoardDGV[e.ColumnIndex, e.RowIndex].Value = _gameStates.Squares.MaxNumber;
+            }
+            catch (OverflowException) 
+            {
                 SudokuBoardDGV[e.ColumnIndex, e.RowIndex].Value = _gameStates.Squares.MaxNumber;
+            }
 
             CheckUserAnswer();
             PrintCorrectnessOnLabel();
@@ -174,7 +192,7 @@ namespace Sudoku
 
         private void CheckUserAnswer()
         {
-            if (_shouldCheckAnswer && MessageLabel.Visible)
+            if (_shouldCheckAnswer)
             {
                 bool linesValidation = IsFitsOnLines();
                 bool sudokuSquaresValidation = !_gameStates.Squares.DoesNumberInSudokuSquareRepeated(SudokuBoardDGV,
@@ -189,23 +207,15 @@ namespace Sudoku
         {
             _shouldCheckAnswer = CheckAnswerCheckBox.Checked;
 
-            if (_shouldCheckAnswer)
+            if (_shouldCheckAnswer == CheckAnswerCheckBox.Checked)
             {
-                MessageLabel.Enabled = true;
-                MessageLabel.Visible = true;
+                CheckUserAnswer();
+                PrintCorrectnessOnLabel();
             }
-            else
-            {
-                MessageLabel.Enabled = false;
-                MessageLabel.Visible = false;
-            }
-        }
-        private void SudokuBoardDGV_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char key = e.KeyChar;
 
-            if (!Char.IsDigit(key))
-                e.Handled = true;
+            MessageLabel.Enabled = _shouldCheckAnswer;
+            MessageLabel.Visible = _shouldCheckAnswer;
+
         }
 
 #if DEBUG
@@ -218,7 +228,14 @@ namespace Sudoku
             {
                 for (int j = 0; j < SudokuBoardDGV.RowCount; j++)
                 {
-                    SudokuBoardDGV[i, j].Value = testArray[testI];
+                    try
+                    {
+                        SudokuBoardDGV[i, j].Value = testArray[testI];
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        return;
+                    }
                     testI++;
                 }
             }
@@ -227,10 +244,9 @@ namespace Sudoku
         private bool CheckAllTable()
         {
             for (int i = 0; i < SudokuBoardDGV.ColumnCount; i++)
-            {
                 for (int j = 0; j < SudokuBoardDGV.RowCount; j++)
                 {
-                    if (_shouldCheckAnswer && MessageLabel.Visible)
+                    if (_shouldCheckAnswer)
                     {
                         bool linesValidation = IsFitsOnLines(i,j, Convert.ToInt16(SudokuBoardDGV[i,j].Value));
                         bool sudokuSquaresValidation = !_gameStates.Squares.DoesNumberInSudokuSquareRepeated(SudokuBoardDGV,
@@ -241,7 +257,6 @@ namespace Sudoku
                             return false;
                     }
                 }
-            }
 
             return true;
         }
@@ -249,7 +264,6 @@ namespace Sudoku
         private void Wtf()
         {
             _isPlayersAnswerCorrect = CheckAllTable();
-
             PrintCorrectnessOnLabel();
         }
 
@@ -257,6 +271,15 @@ namespace Sudoku
         private void MessageLabel_Click(object sender, EventArgs e)
         {
             Wtf();
+        }
+
+        private void SudokuBoardDGV_KeyPress(object sender, KeyPressEventArgs e) 
+            => e.Handled = !Char.IsDigit(e.KeyChar);
+
+        private void SudokuBoardDGV_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            var tb = (TextBox)e.Control;
+            tb.KeyPress += new KeyPressEventHandler(SudokuBoardDGV_KeyPress);
         }
     }
 }

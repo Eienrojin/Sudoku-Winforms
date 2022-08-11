@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.SudokuBoardDGV = new System.Windows.Forms.DataGridView();
             this.MessageLabel = new System.Windows.Forms.Label();
@@ -57,15 +57,15 @@
             this.SudokuBoardDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.SudokuBoardDGV.ColumnHeadersVisible = false;
             this.SudokuBoardDGV.Cursor = System.Windows.Forms.Cursors.Cross;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Info;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe Print", 15.25F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            dataGridViewCellStyle3.NullValue = null;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.DarkRed;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.SudokuBoardDGV.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Info;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe Print", 15.25F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.NullValue = null;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.DarkRed;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.SudokuBoardDGV.DefaultCellStyle = dataGridViewCellStyle1;
             this.SudokuBoardDGV.GridColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.SudokuBoardDGV.Location = new System.Drawing.Point(3, 3);
             this.SudokuBoardDGV.MultiSelect = false;
@@ -76,6 +76,7 @@
             this.SudokuBoardDGV.Size = new System.Drawing.Size(559, 559);
             this.SudokuBoardDGV.TabIndex = 0;
             this.SudokuBoardDGV.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.SudokuBoardDGV_CellEndEdit);
+            this.SudokuBoardDGV.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.SudokuBoardDGV_EditingControlShowing);
             this.SudokuBoardDGV.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SudokuBoardDGV_KeyPress);
             // 
             // MessageLabel
